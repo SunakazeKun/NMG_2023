@@ -13,7 +13,7 @@ namespace neo {
         mStringSpider->init(rIter);
 
         initClipping(rIter);
-        
+
         makeActorAppeared();
     }
 

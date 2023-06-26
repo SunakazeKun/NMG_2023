@@ -148,7 +148,7 @@ namespace {
         if (gsa.isOwnBronzeStar(scenarioId)) {
             return "System_ResultGetBronzeStar";
         }
-        
+
         if (gsa.isGrandStar(scenarioId)) {
             return "System_ResultGetGrandStar";
         }

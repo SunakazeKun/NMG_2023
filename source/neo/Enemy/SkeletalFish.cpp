@@ -63,7 +63,7 @@ namespace neo {
         MR::extractMtxYDir(baseMtx, &mUpVec);
         MR::updateBaseScale(this, mAnimScaleCtrl);
     }
-    
+
     void SkeletalFish::attackSensor(HitSensor *pSender, HitSensor *pReceiver) {
         if (MR::isEqualSensor(pSender, this, "Explosion")) {
             MR::sendMsgEnemyAttackExplosion(pReceiver, pSender);
@@ -79,7 +79,7 @@ namespace neo {
             MR::sendMsgPush(pReceiver, pSender);
         }
     }
-    
+
     bool SkeletalFish::receiveMsgPlayerAttack(u32 msg, HitSensor *pSender, HitSensor *pReceiver) {
         if (MR::isMsgJetTurtleAttack(msg) || MR::isMsgInvincibleAttack(msg)) {
             if (isNerve(NrvSkeletalFishSwim)

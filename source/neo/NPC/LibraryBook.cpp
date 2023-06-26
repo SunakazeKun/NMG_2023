@@ -17,10 +17,10 @@ namespace neo {
     }
 
     namespace NrvLibraryBook {
-		void NrvWait::execute(Spine *pSpine) const {
+        void NrvWait::execute(Spine *pSpine) const {
             LibraryBook *pActor = (LibraryBook*)pSpine->mExecutor;
             MR::tryTalkNearPlayer(pActor->mTalkCtrl);
-		}
+        }
 
         NrvWait(NrvWait::sInstance);
     }

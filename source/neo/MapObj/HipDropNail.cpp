@@ -1,197 +1,197 @@
 #include "neo/MapObj/HipDropNail.h"
 
 namespace neo {
-	HipDropNail::HipDropNail(const char *pName) : LiveActor(pName) {
-		mHost = NULL;
-		mYOffset = 100.0f;
-		mMoveTime = 60;
-		mUpVec.set<f32>(0.0f, 1.0f, 0.0f);
-		mOrgPos.zero();
-	}
+    HipDropNail::HipDropNail(const char *pName) : LiveActor(pName) {
+        mHost = NULL;
+        mYOffset = 100.0f;
+        mMoveTime = 60;
+        mUpVec.set<f32>(0.0f, 1.0f, 0.0f);
+        mOrgPos.zero();
+    }
 
-	void HipDropNail::init(const JMapInfoIter &rIter) {
-		MR::processInitFunction(this, rIter, false);
-		MR::calcUpVec(&mUpVec, this);
+    void HipDropNail::init(const JMapInfoIter &rIter) {
+        MR::processInitFunction(this, rIter, false);
+        MR::calcUpVec(&mUpVec, this);
 
-		MR::getJMapInfoArg0NoInit(rIter, &mYOffset);
-		MR::getJMapInfoArg1NoInit(rIter, &mMoveTime);
+        MR::getJMapInfoArg0NoInit(rIter, &mYOffset);
+        MR::getJMapInfoArg1NoInit(rIter, &mMoveTime);
 
-		initNerve(NrvHipDropNailWait, 0);
-		makeActorAppeared();
-	}
+        initNerve(NrvHipDropNailWait, 0);
+        makeActorAppeared();
+    }
 
-	bool HipDropNail::receiveMsgPlayerAttack(u32 msg, HitSensor *pSender, HitSensor *pReceiver) {
-		if (MR::isMsgPlayerHipDrop(msg) || MR::isMsgPlayerHipDropFloor(msg)) {
-			if (isNerve(NrvHipDropNailWait)) {
-				TVec3f dirToPlayer;
-				MR::calcSensorDirection(&dirToPlayer, pReceiver, pSender);
+    bool HipDropNail::receiveMsgPlayerAttack(u32 msg, HitSensor *pSender, HitSensor *pReceiver) {
+        if (MR::isMsgPlayerHipDrop(msg) || MR::isMsgPlayerHipDropFloor(msg)) {
+            if (isNerve(NrvHipDropNailWait)) {
+                TVec3f dirToPlayer;
+                MR::calcSensorDirection(&dirToPlayer, pReceiver, pSender);
 
-				if (mUpVec.dot(dirToPlayer) >= 0.0f) {
-					setNerve(NrvHipDropNailMove);
-					return true;
-				}
-			}
-		}
+                if (mUpVec.dot(dirToPlayer) >= 0.0f) {
+                    setNerve(NrvHipDropNailMove);
+                    return true;
+                }
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	void HipDropNail::setHost(HipDropNailWatcher *pHost) {
-		mHost = pHost;
-	}
+    void HipDropNail::setHost(HipDropNailWatcher *pHost) {
+        mHost = pHost;
+    }
 
-	bool HipDropNail::isMoved() const {
-		return isNerve(NrvHipDropNailMoved);
-	}
+    bool HipDropNail::isMoved() const {
+        return isNerve(NrvHipDropNailMoved);
+    }
 
-	void HipDropNail::exeMove() {
-		if (MR::isFirstStep(this)) {
-			mOrgPos.set(mTranslation);
-		}
+    void HipDropNail::exeMove() {
+        if (MR::isFirstStep(this)) {
+            mOrgPos.set(mTranslation);
+        }
 
-		f32 yOffset = MR::calcNerveValue(this, mMoveTime, 0.0f, mYOffset);
-		TVec3f newPosition = mOrgPos + mUpVec * -yOffset;
-		MR::setPosition(this, newPosition);
+        f32 yOffset = MR::calcNerveValue(this, mMoveTime, 0.0f, mYOffset);
+        TVec3f newPosition = mOrgPos + mUpVec * -yOffset;
+        MR::setPosition(this, newPosition);
 
-		if (MR::isStep(this, mMoveTime)) {
-			if (MR::isValidSwitchA(this)) {
-				MR::onSwitchA(this);
-			}
+        if (MR::isStep(this, mMoveTime)) {
+            if (MR::isValidSwitchA(this)) {
+                MR::onSwitchA(this);
+            }
 
-			setNerve(NrvHipDropNailMoved);
-		}
-	}
+            setNerve(NrvHipDropNailMoved);
+        }
+    }
 
-	void HipDropNail::exeMoved() {
-		if (MR::isFirstStep(this)) {
-			MR::invalidateCollisionParts(this);
+    void HipDropNail::exeMoved() {
+        if (MR::isFirstStep(this)) {
+            MR::invalidateCollisionParts(this);
 
-			if (MR::isValidSwitchA(this)) {
-				MR::onSwitchA(this);
-			}
+            if (MR::isValidSwitchA(this)) {
+                MR::onSwitchA(this);
+            }
 
-			if (mHost) {
-				mHost->setSpawnPos(mTranslation);
-			}
-		}
-	}
+            if (mHost) {
+                mHost->setSpawnPos(mTranslation);
+            }
+        }
+    }
 
-	// ----------------------------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------------------------------------------------------------
 
-	HipDropNailWatcher::HipDropNailWatcher(const char *pName) : LiveActor(pName) {
-		mNails = NULL;
-		mNailsCount = 0;
-		mScenarioId = -1;
-		mSpawnPos.zero();
-	}
+    HipDropNailWatcher::HipDropNailWatcher(const char *pName) : LiveActor(pName) {
+        mNails = NULL;
+        mNailsCount = 0;
+        mScenarioId = -1;
+        mSpawnPos.zero();
+    }
 
-	void HipDropNailWatcher::init(const JMapInfoIter &rIter) {
-		MR::initDefaultPos(this, rIter);
-		MR::connectToSceneMapObjMovement(this);
-		MR::invalidateClipping(this);
+    void HipDropNailWatcher::init(const JMapInfoIter &rIter) {
+        MR::initDefaultPos(this, rIter);
+        MR::connectToSceneMapObjMovement(this);
+        MR::invalidateClipping(this);
 
-		MR::getJMapInfoArg0NoInit(rIter, &mScenarioId);
-		MR::getJMapInfoArg1NoInit(rIter, &mPlayFanfare);
-		MR::useStageSwitchReadA(this, rIter);
+        MR::getJMapInfoArg0NoInit(rIter, &mScenarioId);
+        MR::getJMapInfoArg1NoInit(rIter, &mPlayFanfare);
+        MR::useStageSwitchReadA(this, rIter);
 
-		mNailsCount = MR::getChildObjNum(rIter);
-		mNails = new HipDropNail*[mNailsCount];
+        mNailsCount = MR::getChildObjNum(rIter);
+        mNails = new HipDropNail * [mNailsCount];
 
-		for (s32 i = 0; i < mNailsCount; i++) {
-			mNails[i] = (HipDropNail*)NameObjFactory::initChildObj(rIter, i);
-			mNails[i]->setHost(this);
-		}
-		
-		initNerve(NrvHipDropNailWatcherWatch, 0);
+        for (s32 i = 0; i < mNailsCount; i++) {
+            mNails[i] = (HipDropNail*)NameObjFactory::initChildObj(rIter, i);
+            mNails[i]->setHost(this);
+        }
 
-		if (mScenarioId != -1) {
-			MR::declarePowerStar(this, mScenarioId);
-		}
+        initNerve(NrvHipDropNailWatcherWatch, 0);
 
-		if (mPlayFanfare) {
-			initSound(2, "ExterminationGeneralChecker", NULL, TVec3f(0.0f, 0.0f, 0.0f));
-		}
+        if (mScenarioId != -1) {
+            MR::declarePowerStar(this, mScenarioId);
+        }
 
-		makeActorAppeared();
-	}
+        if (mPlayFanfare) {
+            initSound(2, "ExterminationGeneralChecker", NULL, TVec3f(0.0f, 0.0f, 0.0f));
+        }
 
-	void HipDropNailWatcher::setSpawnPos(const TVec3f &rSpawnPos) {
-		mSpawnPos.set(rSpawnPos);
-	}
+        makeActorAppeared();
+    }
 
-	void HipDropNailWatcher::exeWatch() {
-		bool spawn = true;
+    void HipDropNailWatcher::setSpawnPos(const TVec3f &rSpawnPos) {
+        mSpawnPos.set(rSpawnPos);
+    }
 
-		for (s32 i = 0; i < mNailsCount; i++) {
-			if (!mNails[i]->isMoved()) {
-				spawn = false;
-				break;
-			}
-		}
+    void HipDropNailWatcher::exeWatch() {
+        bool spawn = true;
 
-		if (spawn) {
-			setNerve(NrvHipDropNailWatcherComplete);
-		}
-	}
+        for (s32 i = 0; i < mNailsCount; i++) {
+            if (!mNails[i]->isMoved()) {
+                spawn = false;
+                break;
+            }
+        }
 
-	void HipDropNailWatcher::exeComplete() {
-		if (MR::isFirstStep(this)) {
-			if (MR::isValidSwitchA(this)) {
-				MR::onSwitchA(this);
-			}
-			
-			if (mPlayFanfare) {
-				MR::startActionSound(this, "CompleteInstant", -1, -1, -1);
-			}
-		}
+        if (spawn) {
+            setNerve(NrvHipDropNailWatcherComplete);
+        }
+    }
 
-		if (!mPlayFanfare || MR::isStep(this, 105)) {
-			if (mScenarioId != -1) {
-				MR::requestAppearPowerStar(this, mScenarioId, mSpawnPos);
-			}
+    void HipDropNailWatcher::exeComplete() {
+        if (MR::isFirstStep(this)) {
+            if (MR::isValidSwitchA(this)) {
+                MR::onSwitchA(this);
+            }
 
-			kill();
-		}
-	}
+            if (mPlayFanfare) {
+                MR::startActionSound(this, "CompleteInstant", -1, -1, -1);
+            }
+        }
 
-	// ----------------------------------------------------------------------------------------------------------------
+        if (!mPlayFanfare || MR::isStep(this, 105)) {
+            if (mScenarioId != -1) {
+                MR::requestAppearPowerStar(this, mScenarioId, mSpawnPos);
+            }
 
-	namespace NrvHipDropNail {
-		void NrvWait::execute(Spine *pSpine) const {
-			HipDropNail *pActor = (HipDropNail*)pSpine->mExecutor;
+            kill();
+        }
+    }
 
-			if (MR::isFirstStep(pActor)) {
-				MR::validateCollisionParts(pActor);
-			}
-		}
+    // ----------------------------------------------------------------------------------------------------------------
 
-		void NrvMove::execute(Spine *pSpine) const {
-			HipDropNail *pActor = (HipDropNail*)pSpine->mExecutor;
-			pActor->exeMove();
-		}
+    namespace NrvHipDropNail {
+        void NrvWait::execute(Spine *pSpine) const {
+            HipDropNail *pActor = (HipDropNail*)pSpine->mExecutor;
 
-		void NrvMoved::execute(Spine *pSpine) const {
-			HipDropNail *pActor = (HipDropNail*)pSpine->mExecutor;
-			pActor->exeMoved();
-		}
+            if (MR::isFirstStep(pActor)) {
+                MR::validateCollisionParts(pActor);
+            }
+        }
 
-		NrvWait(NrvWait::sInstance);
-		NrvMove(NrvMove::sInstance);
-		NrvMoved(NrvMoved::sInstance);
-	}
+        void NrvMove::execute(Spine *pSpine) const {
+            HipDropNail *pActor = (HipDropNail*)pSpine->mExecutor;
+            pActor->exeMove();
+        }
 
-	namespace NrvHipDropNailWatcher {
-		void NrvWatch::execute(Spine *pSpine) const {
-			HipDropNailWatcher *pActor = (HipDropNailWatcher*)pSpine->mExecutor;
-			pActor->exeWatch();
-		}
+        void NrvMoved::execute(Spine *pSpine) const {
+            HipDropNail *pActor = (HipDropNail*)pSpine->mExecutor;
+            pActor->exeMoved();
+        }
 
-		void NrvComplete::execute(Spine *pSpine) const {
-			HipDropNailWatcher *pActor = (HipDropNailWatcher*)pSpine->mExecutor;
-			pActor->exeComplete();
-		}
+        NrvWait(NrvWait::sInstance);
+        NrvMove(NrvMove::sInstance);
+        NrvMoved(NrvMoved::sInstance);
+    }
 
-		NrvWatch(NrvWatch::sInstance);
-		NrvComplete(NrvComplete::sInstance);
-	}
+    namespace NrvHipDropNailWatcher {
+        void NrvWatch::execute(Spine *pSpine) const {
+            HipDropNailWatcher *pActor = (HipDropNailWatcher*)pSpine->mExecutor;
+            pActor->exeWatch();
+        }
+
+        void NrvComplete::execute(Spine *pSpine) const {
+            HipDropNailWatcher *pActor = (HipDropNailWatcher*)pSpine->mExecutor;
+            pActor->exeComplete();
+        }
+
+        NrvWatch(NrvWatch::sInstance);
+        NrvComplete(NrvComplete::sInstance);
+    }
 }

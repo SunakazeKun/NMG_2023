@@ -22,7 +22,7 @@ namespace pt {
         /* 25 */ { "LifeUpHeart",       "Dummy", { 0.0f, 70.0f, 0.0f }, 16, NULL, false },
     };
 
-    #define NUM_NEW_DUMMY_MODEL_ITEMS (s32)(sizeof(cNewDummyDisplayModels) / sizeof(DummyDisplayModelInfo))
+#define NUM_NEW_DUMMY_MODEL_ITEMS (s32)(sizeof(cNewDummyDisplayModels) / sizeof(DummyDisplayModelInfo))
 
     DummyDisplayModel* tryCreateNewDummyModel(LiveActor *pHost, const JMapInfoIter &rIter, s32 defaultId, int v4) {
         s32 modelId = MR::getDummyDisplayModelId(rIter, defaultId);
