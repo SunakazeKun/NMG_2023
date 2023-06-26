@@ -1,0 +1,16 @@
+*.bin
+*.d
+*.map
+*.dol
+/.idea
+/.vs
+/__pycache__
+/_workspace_
+/bin
+/build
+/deps/CodeWarrior
+/deps/Kamek
+/deps/Syati
+/loader
+/buildloader.py
+/convStationedFileInfoFromPAL.py
