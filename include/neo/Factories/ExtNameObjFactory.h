@@ -8,6 +8,7 @@
 #include "neo/AreaObj/AstroWarpArea.h"
 #include "neo/Enemy/SkeletalFish.h"
 #include "neo/Map/ClippingDummyTarget.h"
+#include "neo/MapObj/AstroCore.h"
 #include "neo/MapObj/AstroLibrary.h"
 #include "neo/MapObj/HipDropNail.h"
 #include "neo/MapObj/IllustItem.h"
@@ -86,6 +87,7 @@ namespace {
         { "PadRecordHelper", createExtActor<pad::PadRecordHelper> },
 
         // MapObj
+        { "AstroCore", createExtActor<neo::AstroCore> },
         { "AstroLibrary", createExtActor<neo::AstroLibrary> },
         { "MarblePlanet", createExtActor<neo::MarblePlanet> },
         { "SpiderCocoon", createExtActor<neo::SpiderCocoon> },

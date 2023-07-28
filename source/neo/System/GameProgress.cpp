@@ -92,7 +92,9 @@ namespace neo {
 
 #if defined(PAL) || defined(USA) || defined(JPN)
     kmBranch(0x804D2D90, isUnlockGreenStars);
+    kmCall(0x804D82A4, isUnlockGreenStars);
 #elif defined(TWN) || defined(KOR)
     kmBranch(0x804D2E20, isUnlockGreenStars);
+    kmCall(0x804D8334, isUnlockGreenStars);
 #endif
 }

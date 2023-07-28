@@ -74,4 +74,9 @@ namespace {
 #elif defined(TWN) || defined(KOR)
     kmWrite32(0x804DE0C0, BLR); // GameDataPlayerStatus::addPlayerLeft stub
 #endif
+
+    // Skip Bank Toad sequence
+    kmWrite32(0x8034EC20, 0x38600000); // Disable check for 1-Up gift
+    kmWrite32(0x8034EC24, 0x480000AC);
+    kmWrite32(0x8034EE54, 0x48000038); // Prevent 1-Ups from being gifted
 }

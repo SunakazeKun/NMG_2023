@@ -13,7 +13,7 @@ namespace {
     const StarChanceExceptInfo cStarChanceExceptInfos[] = {
         { STAGE_GLOOMY_GALLEON_GALAXY, 0 },
         { STAGE_TURNLOG_GALAXY, 3 },
-        { STAGE_COMET_OBSERVATORY, 1 }
+        { STAGE_COMET_OBSERVATORY, 0 }
     };
 
     const s32 cStarChanceExceptInfosCount = sizeof(cStarChanceExceptInfos) / sizeof(StarChanceExceptInfo);

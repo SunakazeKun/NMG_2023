@@ -53,5 +53,7 @@ namespace neo {
         if (!neo::isDaredevilModeOrComet()) {
             MarioAccess::changeItemStatus(status);
         }
+
+        MR::incPlayerOxygen(8);
     }
 }

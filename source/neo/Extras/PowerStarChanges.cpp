@@ -58,15 +58,35 @@ namespace neo {
 namespace {
     bool tryDoStarGet(PowerStar* pStar) {
         if (MR::isPowerStarGreenInCurrentStage(pStar->mPowerStarId)) {
-            if (pStar->isEndAppearDemo()) {
-                MR::invalidateHitSensors(pStar);
-                pStar->setNerve(NrvGreenStarGot);
+            const char* stageName = MR::getCurrentStageName();
+            s32 scenarioNo = MR::getCurrentScenarioNo();
+            GalaxyStatusAccessor gsa = MR::makeGalaxyStatusAccessor(stageName);
+
+            s32 greenStarsScenarioTotal = 0;
+            s32 greenStarsScenarioOwned = 0;
+
+            for (int i = 0; i < gsa.getPowerStarNum(); i++) {
+                s32 starId = i + 1;
+
+                if (gsa.isGreenStar(starId) && gsa.isExistPowerStarAtScenario(scenarioNo, starId)) {
+                    greenStarsScenarioTotal++;
+
+                    if (gsa.hasPowerStar(starId)) {
+                        greenStarsScenarioOwned++;
+                    }
+                }
             }
-            return true;
+
+            if ((greenStarsScenarioTotal - greenStarsScenarioOwned) > 1) {
+                if (pStar->isEndAppearDemo()) {
+                    MR::invalidateHitSensors(pStar);
+                    pStar->setNerve(NrvGreenStarGot);
+                }
+                return true;
+            }
         }
-        else {
-            return false;
-        }
+        
+        return false;
     }
 
     bool canStarMsgRushTakeOver(PowerStar* pStar, u32 msg) {

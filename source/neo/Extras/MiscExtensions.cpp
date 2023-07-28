@@ -41,7 +41,7 @@ namespace {
 
 
     /*****************************************************************************************************************/
-    /* Message responds                                                                                              */
+    /* Message responses                                                                                             */
     /*****************************************************************************************************************/
     // Petari
     bool checkPetariPlayerAttacks(u32 msg) {
@@ -88,7 +88,7 @@ namespace {
         }
 
         if (MR::isEqualStageName(STAGE_GLOOMY_GALLEON_GALAXY)) {
-            MR::setClippingTypeSphere(earthenPipe, 2000.0);
+            MR::setClippingTypeSphere(earthenPipe, 2000.0f);
             return false;
         }
         else {

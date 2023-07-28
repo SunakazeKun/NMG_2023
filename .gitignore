@@ -10,7 +10,6 @@
 /build
 /deps/CodeWarrior
 /deps/Kamek
-/deps/Syati
 /loader
 /buildloader.py
 /convStationedFileInfoFromPAL.py
