@@ -1,7 +1,8 @@
 #pragma once
 
-#include "syati.h"
+#include "syati-light.h"
 
 namespace pt {
     bool isPlayerElementMode(s32 mode);
+    bool isPlayerSkating();
 };

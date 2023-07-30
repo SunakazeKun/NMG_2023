@@ -1,13 +1,13 @@
 #pragma once
 
-#include "syati.h"
+#include "Game/MapObj/InvisiblePolygonObj.h"
 
 // 0 to 13 correspond to player modes
 #define TRANSPARENT_WALL_FLAG_EXTRA_START 14
-#define TRANSPARENT_WALL_CHECK_PLAYER_SKATING (TRANSPARENT_WALL_FLAG_EXTRA_START + 1)
-#define TRANSPARENT_WALL_CHECK_PLAYER_TERESA_DISAPPEAR (TRANSPARENT_WALL_FLAG_EXTRA_START + 2)
+#define TRANSPARENT_WALL_CHECK_PLAYER_SKATING (TRANSPARENT_WALL_FLAG_EXTRA_START + 0)
+#define TRANSPARENT_WALL_CHECK_PLAYER_TERESA_DISAPPEAR (TRANSPARENT_WALL_FLAG_EXTRA_START + 1)
 
-namespace neo {
+namespace pt {
     class TransparentWall : public InvisiblePolygonObj {
     public:
         TransparentWall(const char *pName);

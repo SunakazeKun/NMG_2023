@@ -1,7 +1,7 @@
 ﻿#include "pt/MapObj/NewMorphItemNeo.h"
 
 /*
-* Authors: Aurum
+* Author: Aurum
 * Objects: MorphItemNeoIce, MorphItemNeoFoo, MorphItemCollectionIce, MorphItemCollectionFoo
 * Parameters: See other MorphItemNeo and MorphItemCollection objects
 *
@@ -15,60 +15,59 @@
 */
 
 namespace pt {
-    /*
-    * Ice Flower
-    */
-    MorphItemNeoIce::MorphItemNeoIce(const char *pName) : MorphItemObjNeo(pName) {
+	/*
+	* Ice Flower
+	*/
+	MorphItemNeoIce::MorphItemNeoIce(const char *pName) : MorphItemObjNeo(pName) {
 
-    }
+	}
 
-    u32 MorphItemNeoIce::getPowerUp() {
-        return MORPH_ICE;
-    }
+	u32 MorphItemNeoIce::getPowerUp() {
+		return MORPH_ICE;
+	}
 
-    void MorphItemNeoIce::emitAppearEffects() {
-        MR::emitEffect(this, "AppearIceFlower");
-        MR::startActionSound(this, "OjMorphFlowerAppear", -1, -1, -1);
-    }
-
-
-    /*
-    * Flying Star
-    */
-    MorphItemNeoFoo::MorphItemNeoFoo(const char *pName) : MorphItemObjNeo(pName) {
-
-    }
-
-    u32 MorphItemNeoFoo::getPowerUp() {
-        return MORPH_FOO;
-    }
-
-    void MorphItemNeoFoo::emitAppearEffects() {
-        MR::emitEffect(this, "AppearFoo");
-        MR::startActionSound(this, "OjMorphItemAppear", -1, -1, -1);
-    }
-
-    // Fixes bug that prevents Flying Mario from performing Wall Jumps
-    kmWrite32(0x803AF520, 0x2C030000);
-    kmWrite32(0x803AF524, 0x4182000C);
+	void MorphItemNeoIce::emitAppearEffects() {
+		MR::emitEffect(this, "AppearIceFlower");
+		MR::startActionSound(this, "OjMorphFlowerAppear", -1, -1, -1);
+	}
 
 
-    /*
-    * MorphItemCollection checks the object's name to detect the proper power-up type. This is done by initPowerUpModel.
-    * We hijack calls to this function to check our custom object names first and apply the power-up types accordingly.
-    * However, any other object name is redirected to be handled in the original function.
-    */
-    void initCollectionPowerUp(MorphItemCollection *pActor, const JMapInfoIter &rIter) {
-        if (MR::isObjectName(rIter, "MorphItemCollectionIce")) {
-            pActor->mPowerUpType = MORPH_ICE;
-        }
-        else if (MR::isObjectName(rIter, "MorphItemCollectionFoo")) {
-            pActor->mPowerUpType = MORPH_FOO;
-        }
-        else {
-            pActor->initPowerUpModel(rIter);
-        }
-    }
+	/*
+	* Flying Star
+	*/
+	MorphItemNeoFoo::MorphItemNeoFoo(const char *pName) : MorphItemObjNeo(pName) {
 
-    kmCall(0x802D1C3C, initCollectionPowerUp); // redirection hook
+	}
+
+	u32 MorphItemNeoFoo::getPowerUp() {
+		return MORPH_FOO;
+	}
+
+	void MorphItemNeoFoo::emitAppearEffects() {
+		MR::emitEffect(this, "AppearFoo");
+		MR::startActionSound(this, "OjMorphItemAppear", -1, -1, -1);
+	}
+
+	kmWrite32(0x80024104, 0x48000010); // set first collection flag
+	kmWrite32(0x80024584, 0x60000000); // skip collection flag check
+
+
+	/*
+	* MorphItemCollection checks the object's name to detect the proper power-up type. This is done by initPowerUpModel.
+	* We hijack calls to this function to check our custom object names first and apply the power-up types accordingly.
+	* However, any other object name is redirected to be handled in the original function.
+	*/
+	void initCollectionPowerUp(MorphItemCollection *pActor, const JMapInfoIter &rIter) {
+		if (MR::isObjectName(rIter, "MorphItemCollectionIce")) {
+			pActor->mPowerUpType = MORPH_ICE;
+		}
+		else if (MR::isObjectName(rIter, "MorphItemCollectionFoo")) {
+			pActor->mPowerUpType = MORPH_FOO;
+		}
+		else {
+			pActor->initPowerUpModel(rIter);
+		}
+	}
+
+	kmCall(0x802D1C3C, initCollectionPowerUp); // redirection hook
 }

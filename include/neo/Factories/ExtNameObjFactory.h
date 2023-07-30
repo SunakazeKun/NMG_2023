@@ -2,6 +2,7 @@
 
 #include "pt/Enemy/Anagon.h"
 #include "pt/Enemy/BallBeamer.h"
+#include "pt/Extras/ExtSuperSpinDriverGreen.h"
 #include "pt/MapObj/BlueChip.h"
 #include "pt/MapObj/NewMorphItemNeo.h"
 #include "pt/MapObj/PowerStarSpawner.h"
@@ -41,8 +42,6 @@ namespace {
     template<>
     NameObj* createExtActor<pt::PowerStarSpawner>(const char *pName);
 
-    NameObj* createSuperSpinDriverGreen(const char *pName);
-
     // ----------------------------------------------------------------------------------------------------------------
 
     const CreateActorEntry cNewCreateNameObjTable[] = {
@@ -69,7 +68,7 @@ namespace {
         { "PowerStarSpawner", createExtActor<pt::PowerStarSpawner> },
         { "ShellfishBlueChip", NameObjFactory::createNameObj<Shellfish> },
         { "ShellfishPurpleCoin", NameObjFactory::createNameObj<Shellfish> },
-        { "SuperSpinDriverGreen", createSuperSpinDriverGreen },
+        { "SuperSpinDriverGreen", pt::createSuperSpinDriverGreen },
 
 
         // NEO MARIO GALAXY

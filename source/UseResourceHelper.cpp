@@ -3,13 +3,13 @@
 #ifdef DEBUG
 
 bool printArchive(const char *pName) {
-    OSReport("ARCHIVE %s\n", pName);
-    return MR::isFileExist(pName, false);
+	OSReport("ARCHIVE %s\n", pName);
+	return MR::isFileExist(pName, false);
 }
 
 u32 printSound(const char *pName) {
-    OSReport("SOUND %s\n", pName);
-    return JGadget::getHashCode(pName);
+	OSReport("SOUND %s\n", pName);
+	return JGadget::getHashCode(pName);
 }
 
 #if defined(TWN)|| defined(KOR)

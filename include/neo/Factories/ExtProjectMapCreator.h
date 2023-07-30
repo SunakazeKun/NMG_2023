@@ -2,7 +2,7 @@
 
 #include "neo/Effect/EffectObjLine.h"
 #include "neo/MapObj/PhantomShipBridge.h"
-#include "neo/MapObj/TransparentWall.h"
+#include "pt/MapObj/TransparentWall.h"
 
 /*
 * SMG2 actor class definitions for use with "NameObjFactory::createNameObj". We only need these declarations. The actual
@@ -49,7 +49,7 @@ namespace {
         // { "ScaleMapObj", createExtActor<LavaBallRisingPlanetLava> },
         { "SimpleEnvironmentObj", NameObjFactory::createNameObj<SimpleEnvironmentObj> },
         { "SimpleTextureSwitchChangeObj", NameObjFactory::createNameObj<SimpleTextureSwitchChangeObj> },
-        { "TransparentWall", createExtActor<neo::TransparentWall> },
+        { "TransparentWall", createExtActor<pt::TransparentWall> },
         { "WoodBox", NameObjFactory::createNameObj<WoodBox> }
     };
 
