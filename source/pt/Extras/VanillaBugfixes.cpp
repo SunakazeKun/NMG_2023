@@ -46,7 +46,7 @@ namespace pt {
 
 
 		/*****************************************************************************************************************/
-		/* Safely read KeySwitch's Obj_arg0 when constructed via other objects.                                           */
+		/* Safely read KeySwitch's Obj_arg0 when constructed via other objects.                                          */
 		/*****************************************************************************************************************/
 		void initKeySwitchSafeGetShadowDropLength(const JMapInfoIter &rIter, f32 *pDest) {
 			if (MR::isValidInfo(rIter)) {
