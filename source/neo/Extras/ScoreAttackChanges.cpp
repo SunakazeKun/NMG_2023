@@ -16,7 +16,7 @@ namespace {
 	kmWrite32(0x8035B844, 0x38000006);
 
 	// Changes minimum required highscore (500 -> 600) for MameMuimuiScorer
-	kmWrite32(0x801C07B8, 0x38000000 | 600);
+	//kmWrite32(0x801C07B8, 0x38000000 | 600);
 
 
 	// Make Star Select show score for YosshiHomeGalaxy2
