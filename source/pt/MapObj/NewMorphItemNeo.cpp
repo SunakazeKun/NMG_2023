@@ -48,9 +48,6 @@ namespace pt {
 		MR::startActionSound(this, "OjMorphItemAppear", -1, -1, -1);
 	}
 
-	kmWrite32(0x80024104, 0x48000010); // set first collection flag
-	kmWrite32(0x80024584, 0x60000000); // skip collection flag check
-
 
 	/*
 	* MorphItemCollection checks the object's name to detect the proper power-up type. This is done by initPowerUpModel.
